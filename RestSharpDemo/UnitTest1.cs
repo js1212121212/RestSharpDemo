@@ -57,19 +57,21 @@ namespace RestSharpDemo {
             //Add Body to the request. Below commented out code no longer works as AddBody is deprecated
             //request.RequestFormat = DataFormat.Json;
             //request.AddBody(new { name = "Sam" });
-            request.AddJsonBody(new Posts() { id = "14", author = "Execute Automation", title = "RestSharp Demo Course" });
+            request.AddJsonBody(new Posts() { id = "18", author = "Execute Automation", title = "RestSharp Demo Course" });
 
             //old way without using Newtonsoft library
+            //pass a Posts model class to automatically deserialise the value
+            var response = client.Execute<Posts>(request);
             //var deserialise = new JsonDeserializer();
-            //var output = deserialise.Deserialize<Dictionary<string, string>>(client.Execute(request));
-            //var result = output["name"];
-            //Assert.That(result, Is.EqualTo("Sam"), "Profile is not correct");
+            //var output = deserialise.Deserialize<Dictionary<string, string>>(response);
+            //var result = output["author"];
+            Assert.That(response.Data.author, Is.EqualTo("Execute Automation"), "Author is not correct");
 
             //below is using Newtonsoft
-            JObject result = JObject.Parse(client.Execute(request).Content);
-            Assert.That(result["author"].ToString(), Is.EqualTo("Execute Automation"), "Profile is not correct");
+            //JObject result = JObject.Parse(client.Execute<Posts>(request).Content);
+            //Assert.That(result["author"].ToString(), Is.EqualTo("Execute Automation"), "Profile is not correct");
         }
     }
 
-    //one with non-anonymous, with type
+
 }
